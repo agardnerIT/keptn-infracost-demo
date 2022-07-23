@@ -1,0 +1,22 @@
+apiVersion: v2
+actions:
+  - name: "Run infracost"
+    events:
+      - name: "sh.keptn.event.checkcost.triggered"
+    tasks:
+      - name: "Execute Infracost"
+        workingDir: "/keptn"
+        files:
+          - /files/plan.json
+        image: "infracost/infracost:ci-0.10.8"
+        cmd:
+          - "infracost"
+        args:
+          - 'breakdown'
+          - '--path'
+          - '/keptn/files/plan.json'
+          - '--format'
+          - 'table'
+        env:
+          - name: infracost-details
+            valueFrom: secret
